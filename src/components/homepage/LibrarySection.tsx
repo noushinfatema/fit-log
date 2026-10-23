@@ -10,10 +10,16 @@ const LibrarySection = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch('https://api.api-store.workers.dev/api/fitlog', {cache : "force-cache"})
+    fetch('https://api.api-store.workers.dev/api/fitlog')
       .then((res) => res.json())
       .then((data) => {
-        setWorkouts(Array.isArray(data) ? data : data.workouts || []);
+        const rawList = Array.isArray(data) ? data : data.workouts || [];
+        // Map caloriesBurned attribute if calories is missing
+        const mappedList = rawList.map((item: Workout) => ({
+          ...item,
+          calories: item.calories ?? item.caloriesBurned ?? 0,
+        }));
+        setWorkouts(mappedList);
         setLoading(false);
       })
       .catch((err) => {
@@ -37,63 +43,62 @@ const LibrarySection = () => {
 
         {loading ? (
           <div className="text-center py-20 text-[#9CA3AF]">
-            Loading…
+            Loading workouts…
           </div>
         ) : (
-          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {workouts.map((workout) => (
-              <Link
-                key={workout.id}
-                href={`/details/${workout.id}`}
-                className="bg-[#15171D] border border-[#222630] rounded-2xl p-4 flex flex-col justify-between hover:border-[#CCFF00] transition-colors group cursor-pointer"
-              >
-                <div>
-                 
-                  <div className="relative w-full h-48 rounded-xl overflow-hidden mb-4 bg-[#1C1F26]">
-                    <Image
-                      src={workout.image || '/assets/banner.png'}
-                      alt={workout.name}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
+            {workouts.map((workout) => {
+              const calVal = workout.calories ?? workout.caloriesBurned ?? 0;
+              return (
+                <Link
+                  key={workout.id}
+                  href={`/details/${workout.id}`}
+                  className="bg-[#15171D] border border-[#222630] rounded-2xl p-4 flex flex-col justify-between hover:border-[#CCFF00] transition-colors group cursor-pointer"
+                >
+                  <div>
+                    <div className="relative w-full h-48 rounded-xl overflow-hidden mb-4 bg-[#1C1F26]">
+                      <Image
+                        src={workout.image || '/assets/banner.png'}
+                        alt={workout.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+
+                    <div className="flex flex-wrap gap-1.5 mb-3">
+                      {workout.category?.map((cat, idx) => (
+                        <span
+                          key={idx}
+                          className="bg-[#C2F800] text-black font-extrabold text-[10px] tracking-wider uppercase px-2 py-0.5 rounded-full"
+                        >
+                          {cat}
+                        </span>
+                      ))}
+                    </div>
+
+                    <h3 className="text-white font-extrabold text-lg uppercase tracking-wide leading-tight">
+                      {workout.name}
+                    </h3>
+                    <p className="text-[#9CA3AF] text-xs mt-1 mb-4">
+                      {workout.equipment}
+                    </p>
                   </div>
 
-                 
-                  <div className="flex flex-wrap gap-1.5 mb-3">
-                    {workout.category?.map((cat, idx) => (
-                      <span
-                        key={idx}
-                        className="bg-[#C2F800] text-black font-extrabold text-[10px] tracking-wider uppercase px-2 py-0.5 rounded-full"
-                      >
-                        {cat}
-                      </span>
-                    ))}
+                  {/* Stats Row with correct Calorie mapping */}
+                  <div className="flex items-center gap-4 text-xs text-[#9CA3AF] pt-3 border-t border-[#222630]/60 font-medium">
+                    <span className="flex items-center gap-1">
+                      ⏱ {workout.duration} min
+                    </span>
+                    <span className="flex items-center gap-1">
+                      🔥 {calVal} kcal
+                    </span>
+                    <span className="flex items-center gap-1">
+                      ⭐ {workout.rating}
+                    </span>
                   </div>
-
-                  {/* Workout Name & Equipment */}
-                  <h3 className="text-white font-extrabold text-lg uppercase tracking-wide leading-tight">
-                    {workout.name}
-                  </h3>
-                  <p className="text-[#9CA3AF] text-xs mt-1 mb-4">
-                    {workout.equipment}
-                  </p>
-                </div>
-
-               
-                <div className="flex items-center gap-4 text-xs text-[#9CA3AF] pt-3 border-t border-[#222630]/60">
-                  <span className="flex items-center gap-1">
-                    ⏱ {workout.duration} min
-                  </span>
-                  <span className="flex items-center gap-1">
-                    🔥 {workout.calories} kcal
-                  </span>
-                  <span className="flex items-center gap-1">
-                    ⭐ {workout.rating}
-                  </span>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         )}
       </div>

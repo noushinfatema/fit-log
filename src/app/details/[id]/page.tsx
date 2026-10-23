@@ -17,7 +17,12 @@ const DetailsPage = () => {
       .then((data) => {
         const list: Workout[] = Array.isArray(data) ? data : data.workouts || [];
         const found = list.find((item) => String(item.id) === String(id));
-        setWorkout(found || list[0]); // Fallback if ID match is approximate
+        if (found) {
+          setWorkout({
+            ...found,
+            calories: found.calories ?? found.caloriesBurned ?? 0,
+          });
+        }
         setLoading(false);
       })
       .catch((err) => {
@@ -29,17 +34,19 @@ const DetailsPage = () => {
   if (loading) {
     return (
       <div className="min-h-[70vh] bg-[#0C0D10] text-[#9CA3AF] flex items-center justify-center">
-        Loading…
+        Loading details…
       </div>
     );
   }
 
   if (!workout) return null;
 
+  const calValue = workout.calories ?? workout.caloriesBurned ?? 0;
+
   return (
     <main className="min-h-screen bg-[#0C0D10] px-6 md:px-12 py-10">
       <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-        {/* Left Side: Large Illustration */}
+        {/* Left Side: Illustration */}
         <div className="lg:col-span-6 relative w-full h-[380px] sm:h-[480px] lg:h-[560px] rounded-2xl overflow-hidden bg-[#15171D] border border-[#222630]">
           <Image
             src={workout.image || '/assets/banner.png'}
@@ -50,7 +57,7 @@ const DetailsPage = () => {
           />
         </div>
 
-        
+        {/* Right Side: Details */}
         <div className="lg:col-span-6 space-y-6">
           <div>
             <h1 className="text-white text-3xl sm:text-4xl font-black uppercase tracking-tight">
@@ -62,7 +69,6 @@ const DetailsPage = () => {
             </p>
           </div>
 
-         
           <div className="flex flex-wrap gap-2">
             {workout.category?.map((cat, idx) => (
               <span
@@ -74,7 +80,7 @@ const DetailsPage = () => {
             ))}
           </div>
 
-        
+          {/* Specs Panel */}
           <div className="bg-[#15171D] border border-[#222630] rounded-xl p-4 sm:p-5 space-y-3 text-xs sm:text-sm">
             <div className="flex justify-between border-b border-[#222630] pb-2 text-[#9CA3AF]">
               <span>EQUIPMENT</span>
@@ -98,14 +104,14 @@ const DetailsPage = () => {
             </div>
             <div className="flex justify-between border-b border-[#222630] pb-2 text-[#9CA3AF]">
               <span>CALORIES</span>
-              <span className="text-white font-medium">{workout.calories} kcal</span>
+              <span className="text-white font-medium">{calValue} kcal</span>
             </div>
             <div className="flex justify-between text-[#9CA3AF]">
               <span>RATING</span>
               <span className="text-white font-medium">{workout.rating}</span>
             </div>
           </div>
-      
+
           <div className="space-y-3">
             <h3 className="text-white font-bold text-sm tracking-wider uppercase">
               INSTRUCTIONS
@@ -135,7 +141,7 @@ const DetailsPage = () => {
               onClick={() => addToSaved(workout)}
               className="flex-1 border border-gray-600 hover:border-white text-white font-bold text-sm uppercase px-6 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 bg-transparent"
             >
-              🔖 <span>Save for later</span>
+              <span>Save for later</span>
             </button>
           </div>
         </div>

@@ -13,7 +13,8 @@ export interface Workout {
   sets?: number;
   reps?: string;
   duration: number | string;
-  calories: number | string;
+  calories?: number | string;
+  caloriesBurned?: number | string;
   rating: number | string;
   image?: string;
   instructions?: string[];
@@ -33,52 +34,73 @@ const PlanContext = createContext<PlanContextType | undefined>(undefined);
 export const PlanProvider = ({ children }: { children: React.ReactNode }) => {
   const [planList, setPlanList] = useState<Workout[]>([]);
   const [savedList, setSavedList] = useState<Workout[]>([]);
+  const [isInitialized, setIsInitialized] = useState<boolean>(false);
 
+  // 1. Load saved items from localStorage ONCE after mount
   useEffect(() => {
-    const localPlan = localStorage.getItem('fitlog_plan');
-    const localSaved = localStorage.getItem('fitlog_saved');
-    if (localPlan) setPlanList(JSON.parse(localPlan));
-    if (localSaved) setSavedList(JSON.parse(localSaved));
+    try {
+      const localPlan = localStorage.getItem('fitlog_plan');
+      const localSaved = localStorage.getItem('fitlog_saved');
+      if (localPlan) setPlanList(JSON.parse(localPlan));
+      if (localSaved) setSavedList(JSON.parse(localSaved));
+    } catch (e) {
+      console.error('Error reading localStorage', e);
+    } finally {
+      setIsInitialized(true);
+    }
   }, []);
 
+  // 2. Only write to localStorage AFTER initial load completes
   useEffect(() => {
-    localStorage.setItem('fitlog_plan', JSON.stringify(planList));
-  }, [planList]);
+    if (isInitialized) {
+      localStorage.setItem('fitlog_plan', JSON.stringify(planList));
+    }
+  }, [planList, isInitialized]);
 
   useEffect(() => {
-    localStorage.setItem('fitlog_saved', JSON.stringify(savedList));
-  }, [savedList]);
+    if (isInitialized) {
+      localStorage.setItem('fitlog_saved', JSON.stringify(savedList));
+    }
+  }, [savedList, isInitialized]);
+
+  // Helper to normalize workout object calorie property
+  const normalizeWorkout = (workout: Workout): Workout => ({
+    ...workout,
+    calories: workout.calories ?? workout.caloriesBurned ?? 0,
+  });
 
   const addToPlan = (workout: Workout) => {
-    if (planList.find((item) => item.id === workout.id)) {
-      toast.error(`${workout.name} is already in your plan!`);
+    const item = normalizeWorkout(workout);
+    if (planList.find((p) => String(p.id) === String(item.id))) {
+      toast.error(`${item.name} is already in today's plan!`);
       return;
     }
     if (planList.length >= 5) {
-      toast.error("You've reached the 5-workout cap for today!");
+      toast.error("Cap reached! Maximum 5 workouts allowed for today.");
       return;
     }
-    setPlanList((prev) => [...prev, workout]);
+    setPlanList((prev) => [...prev, item]);
     toast.success("Added to today's plan");
   };
 
   const removeFromPlan = (id: string | number) => {
-    setPlanList((prev) => prev.filter((item) => item.id !== id));
+    setPlanList((prev) => prev.filter((item) => String(item.id) !== String(id)));
     toast.success("Removed from today's plan");
   };
 
   const addToSaved = (workout: Workout) => {
-    if (savedList.find((item) => item.id === workout.id)) {
-      toast.error(`${workout.name} is already saved!`);
+    const item = normalizeWorkout(workout);
+    if (savedList.find((s) => String(s.id) === String(item.id))) {
+      toast.error(`${item.name} is already saved!`);
       return;
     }
-    setSavedList((prev) => [...prev, workout]);
-    toast.success("Added to saved workouts");
+    setSavedList((prev) => [...prev, item]);
+    toast.success("Saved for later");
   };
 
   const removeFromSaved = (id: string | number) => {
-    setSavedList((prev) => prev.filter((item) => item.id !== id));
-    toast.success("Removed from saved workouts");
+    setSavedList((prev) => prev.filter((item) => String(item.id) !== String(id)));
+    toast.success("Removed from saved list");
   };
 
   return (
