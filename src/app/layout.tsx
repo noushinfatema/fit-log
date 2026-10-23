@@ -11,7 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className="bg-[#0C0D10] text-white">
         <PlanProvider>
-          <Toaster position="bottom-right" toastOptions={{ duration: 2500 }} />
+          <Toaster position="top-right" toastOptions={{ duration: 2500 }} />
           <Suspense fallback={<div className="h-16 bg-[#0C0D10]" />}>
             <Navbar />
           </Suspense>

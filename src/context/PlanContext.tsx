@@ -36,7 +36,6 @@ export const PlanProvider = ({ children }: { children: React.ReactNode }) => {
   const [savedList, setSavedList] = useState<Workout[]>([]);
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
 
-  // 1. Load saved items from localStorage ONCE after mount
   useEffect(() => {
     try {
       const localPlan = localStorage.getItem('fitlog_plan');
@@ -50,7 +49,7 @@ export const PlanProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
-  // 2. Only write to localStorage AFTER initial load completes
+  
   useEffect(() => {
     if (isInitialized) {
       localStorage.setItem('fitlog_plan', JSON.stringify(planList));
@@ -63,7 +62,7 @@ export const PlanProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [savedList, isInitialized]);
 
-  // Helper to normalize workout object calorie property
+
   const normalizeWorkout = (workout: Workout): Workout => ({
     ...workout,
     calories: workout.calories ?? workout.caloriesBurned ?? 0,

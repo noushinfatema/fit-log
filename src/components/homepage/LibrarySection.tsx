@@ -84,7 +84,6 @@ const LibrarySection = () => {
                     </p>
                   </div>
 
-                  {/* Stats Row with correct Calorie mapping */}
                   <div className="flex items-center gap-4 text-xs text-[#9CA3AF] pt-3 border-t border-[#222630]/60 font-medium">
                     <span className="flex items-center gap-1">
                       ⏱ {workout.duration} min

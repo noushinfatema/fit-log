@@ -34,7 +34,7 @@ function DetailsContent() {
   if (loading) {
     return (
       <div className="min-h-[70vh] text-[#9CA3AF] flex items-center justify-center">
-        Loading details…
+        Loading…
       </div>
     );
   }
@@ -56,7 +56,7 @@ function DetailsContent() {
         />
       </div>
 
-      {/* Right Side: Details */}
+    
       <div className="lg:col-span-6 space-y-6">
         <div>
           <h1 className="text-white text-3xl sm:text-4xl font-black uppercase tracking-tight">
@@ -79,7 +79,7 @@ function DetailsContent() {
           ))}
         </div>
 
-        {/* Specs Panel */}
+       
         <div className="bg-[#15171D] border border-[#222630] rounded-xl p-4 sm:p-5 space-y-3 text-xs sm:text-sm">
           <div className="flex justify-between border-b border-[#222630] pb-2 text-[#9CA3AF]">
             <span>EQUIPMENT</span>
@@ -134,13 +134,13 @@ function DetailsContent() {
             onClick={() => addToPlan(workout)}
             className="flex-1 bg-[#C2F800] hover:bg-[#b0e200] text-black font-extrabold text-sm uppercase px-6 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2"
           >
-            📅 <span>Add to today's plan</span>
+             <span>Add to today's plan</span>
           </button>
           <button
             onClick={() => addToSaved(workout)}
             className="flex-1 border border-gray-600 hover:border-white text-white font-bold text-sm uppercase px-6 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 bg-transparent"
           >
-            🔖 <span>Save for later</span>
+             <span>Save for later</span>
           </button>
         </div>
       </div>
@@ -151,7 +151,7 @@ function DetailsContent() {
 export default function DetailsPage() {
   return (
     <main className="min-h-screen bg-[#0C0D10] px-6 md:px-12 py-10">
-      <Suspense fallback={<div className="text-center py-20 text-[#9CA3AF]">Loading details…</div>}>
+      <Suspense fallback={<div className="text-center py-20 text-[#9CA3AF]">Loading…</div>}>
         <DetailsContent />
       </Suspense>
     </main>
