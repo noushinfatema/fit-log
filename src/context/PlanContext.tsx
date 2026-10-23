@@ -34,7 +34,6 @@ export const PlanProvider = ({ children }: { children: React.ReactNode }) => {
   const [planList, setPlanList] = useState<Workout[]>([]);
   const [savedList, setSavedList] = useState<Workout[]>([]);
 
-  // Load from LocalStorage
   useEffect(() => {
     const localPlan = localStorage.getItem('fitlog_plan');
     const localSaved = localStorage.getItem('fitlog_saved');

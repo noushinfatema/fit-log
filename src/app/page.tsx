@@ -1,12 +1,11 @@
 import Banner from '@/components/homepage/Banner';
-import React from 'react';
+import LibrarySection from '@/components/homepage/LibrarySection';
 
-const page = () => {
+export default function Home() {
   return (
-    <div>
-      <Banner/>
-    </div>
+    <main>
+      <Banner />
+      <LibrarySection />
+    </main>
   );
-};
-
-export default page;
+}
