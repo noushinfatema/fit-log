@@ -1,4 +1,5 @@
 'use client';
+export const dynamic = 'force-dynamic';
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -46,7 +47,7 @@ const DetailsPage = () => {
   return (
     <main className="min-h-screen bg-[#0C0D10] px-6 md:px-12 py-10">
       <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-        {/* Left Side: Illustration */}
+   
         <div className="lg:col-span-6 relative w-full h-[380px] sm:h-[480px] lg:h-[560px] rounded-2xl overflow-hidden bg-[#15171D] border border-[#222630]">
           <Image
             src={workout.image || '/assets/banner.png'}
@@ -57,7 +58,6 @@ const DetailsPage = () => {
           />
         </div>
 
-        {/* Right Side: Details */}
         <div className="lg:col-span-6 space-y-6">
           <div>
             <h1 className="text-white text-3xl sm:text-4xl font-black uppercase tracking-tight">
@@ -80,7 +80,7 @@ const DetailsPage = () => {
             ))}
           </div>
 
-          {/* Specs Panel */}
+          
           <div className="bg-[#15171D] border border-[#222630] rounded-xl p-4 sm:p-5 space-y-3 text-xs sm:text-sm">
             <div className="flex justify-between border-b border-[#222630] pb-2 text-[#9CA3AF]">
               <span>EQUIPMENT</span>
@@ -135,7 +135,7 @@ const DetailsPage = () => {
               onClick={() => addToPlan(workout)}
               className="flex-1 bg-[#C2F800] hover:bg-[#b0e200] text-black font-extrabold text-sm uppercase px-6 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2"
             >
-              📅 <span>Add to today's plan</span>
+              📅 <span>Add to today&apos;s plan</span>
             </button>
             <button
               onClick={() => addToSaved(workout)}

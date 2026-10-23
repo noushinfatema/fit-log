@@ -1,16 +1,21 @@
 import './globals.css';
+import { Suspense } from 'react';
 import { PlanProvider } from '@/context/PlanContext';
 import { Toaster } from 'react-hot-toast';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+
+export const dynamic = 'force-dynamic';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className="bg-[#0C0D10] text-white">
         <PlanProvider>
-          <Toaster position="top-right" toastOptions={{ duration: 2500 }} />
-          <Navbar />
+          <Toaster position="bottom-right" toastOptions={{ duration: 2500 }} />
+          <Suspense fallback={<div className="h-16 bg-[#0C0D10]" />}>
+            <Navbar />
+          </Suspense>
           {children}
           <Footer />
         </PlanProvider>
