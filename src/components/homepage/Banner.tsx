@@ -23,7 +23,7 @@ const Banner = () => {
             WORKOUT LIBRARY
           </p>
 
-          <h1 className="text-white text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1]">
+          <h1 className="text-white text-4xl sm:text-5xl lg:text-6xl font-bold font-black uppercase tracking-tight leading-[1.1]">
             TRAIN WITH INTENT. <br className="hidden sm:inline" />
             LOG EVERY SET.
           </h1>
@@ -55,13 +55,12 @@ const Banner = () => {
           </div>
         </div>
 
-        {/* Right Banner Image */}
         <div className="lg:col-span-5 flex justify-center lg:justify-end">
           <Image
             src={bannerimg}
             alt="Gym Athlete Training"
             priority
-            className="object-contain max-h-[350px] lg:max-h-[400px] drop-shadow-2xl"
+            className="object-contain max-h-87.5 lg:max-h-100 drop-shadow-2xl"
           />
         </div>
 
