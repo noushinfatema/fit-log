@@ -4,6 +4,7 @@ Project Description :
 A modern, dark-themed gym companion web application built with **Next.js** and **Tailwind CSS**. FitLog allows users to explore workout libraries, lock exercises into today's plan, track exercise metrics live, and organize their workout routines seamlessly.
 
 Technologies Used : 
+
 -Framework:[Next.js](https://nextjs.org/) (App Router)
 -Styling: [Tailwind CSS](https://tailwindcss.com/) & [DaisyUI](https://daisyui.com/)
 -Language:TypeScript
