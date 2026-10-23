@@ -10,7 +10,7 @@ const LibrarySection = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch('https://api.api-store.workers.dev/api/fitlog')
+    fetch('https://api.api-store.workers.dev/api/fitlog', {cache : "force-cache"})
       .then((res) => res.json())
       .then((data) => {
         setWorkouts(Array.isArray(data) ? data : data.workouts || []);
@@ -37,7 +37,7 @@ const LibrarySection = () => {
 
         {loading ? (
           <div className="text-center py-20 text-[#9CA3AF]">
-            Loading workouts…
+            Loading…
           </div>
         ) : (
           

@@ -29,7 +29,7 @@ const DetailsPage = () => {
   if (loading) {
     return (
       <div className="min-h-[70vh] bg-[#0C0D10] text-[#9CA3AF] flex items-center justify-center">
-        Loading details…
+        Loading…
       </div>
     );
   }
@@ -50,7 +50,7 @@ const DetailsPage = () => {
           />
         </div>
 
-        {/* Right Side: Details & Actions */}
+        
         <div className="lg:col-span-6 space-y-6">
           <div>
             <h1 className="text-white text-3xl sm:text-4xl font-black uppercase tracking-tight">
@@ -62,7 +62,7 @@ const DetailsPage = () => {
             </p>
           </div>
 
-          {/* Category Tags */}
+         
           <div className="flex flex-wrap gap-2">
             {workout.category?.map((cat, idx) => (
               <span
@@ -74,7 +74,7 @@ const DetailsPage = () => {
             ))}
           </div>
 
-          {/* Specs Panel */}
+        
           <div className="bg-[#15171D] border border-[#222630] rounded-xl p-4 sm:p-5 space-y-3 text-xs sm:text-sm">
             <div className="flex justify-between border-b border-[#222630] pb-2 text-[#9CA3AF]">
               <span>EQUIPMENT</span>
@@ -105,8 +105,7 @@ const DetailsPage = () => {
               <span className="text-white font-medium">{workout.rating}</span>
             </div>
           </div>
-
-          {/* Instructions */}
+      
           <div className="space-y-3">
             <h3 className="text-white font-bold text-sm tracking-wider uppercase">
               INSTRUCTIONS
@@ -125,7 +124,6 @@ const DetailsPage = () => {
             </ol>
           </div>
 
-          {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <button
               onClick={() => addToPlan(workout)}
